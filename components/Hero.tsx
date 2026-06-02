@@ -15,7 +15,7 @@ const floatingStickers = [
   { emoji: "💜", x: "15%", y: "85%", size: "text-xl", delay: 0.4, duration: 5, rotate: -20 },
 ];
 
-const rotatingWords = ["ANYTIME", "ANYWHERE", "NO CAP", "JUST VIBES", "IN A POUCH", "OPEN IT"];
+const rotatingWords = ["ANYTIME", "ANY DAY", "NO CAP", "THE VIBE", "OPEN IT", "RIGHT NOW"];
 
 function RotatingText() {
   const [index, setIndex] = useState(0);
@@ -28,7 +28,7 @@ function RotatingText() {
   }, []);
 
   return (
-    <span className="inline-block relative h-[1.1em] overflow-hidden align-bottom min-w-[260px] md:min-w-[380px] lg:min-w-[480px]">
+    <span className="inline-block relative h-[1.1em] overflow-hidden align-bottom min-w-[300px] md:min-w-[500px] lg:min-w-[600px]">
       <AnimatePresence mode="wait">
         <motion.span
           key={rotatingWords[index]}
@@ -276,7 +276,7 @@ export default function Hero() {
                   className="bg-violet-600 text-white text-[10px] md:text-xs font-bold tracking-wider px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap"
                   style={{ boxShadow: "0 4px 20px rgba(124,58,237,0.4)" }}
                 >
-                  300ml POUCH 🍹
+                  200ml POUCH 🍹
                 </motion.div>
               </motion.div>
             </motion.div>
@@ -371,7 +371,7 @@ export default function Hero() {
               {[
                 { value: "6", label: "Flavors", emoji: "🍹" },
                 { value: "14%", label: "ALC", emoji: "🔥" },
-                { value: "300ml", label: "Pouch", emoji: "📦" },
+                { value: "200ml", label: "Pouch", emoji: "📦" },
               ].map((stat) => (
                 <motion.div
                   key={stat.label}

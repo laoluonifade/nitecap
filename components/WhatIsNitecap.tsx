@@ -57,7 +57,7 @@ export default function WhatIsNitecap() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-white/50 text-base md:text-lg leading-relaxed mb-8 max-w-lg"
             >
-              NITECAP is a premixed cocktail in a pouch — built for spontaneous
+              NITECAP is a premixed cocktail in a pouch. Built for spontaneous
               moments, not scheduled ones. Brunch, beach, rooftop, random Tuesday. We don&apos;t judge.
             </motion.p>
 
@@ -119,7 +119,7 @@ export default function WhatIsNitecap() {
               </div>
               <p className="text-white/40 text-sm leading-relaxed">
                 Every pouch is an invitation. Open it at noon, at sunset,
-                at 2am — we named it NITECAP, not a curfew.
+                at 2am. We named it NITECAP, not a curfew.
               </p>
             </motion.div>
           </div>

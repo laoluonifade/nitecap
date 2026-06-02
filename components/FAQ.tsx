@@ -15,11 +15,11 @@ const faqs = [
   },
   {
     q: "Do you have non-alcoholic options?",
-    a: "Yes! NITECAP Zero is our Hibiscus Citrus mocktail — zero alcohol, all the vibes. Perfect for designated drivers, sober-curious nights, or anyone who just wants to enjoy the moment without the ABV.",
+    a: "Yes! NITECAP Zero is our Hibiscus Citrus mocktail. Zero alcohol, all the vibes. Perfect for designated drivers, sober-curious nights, or anyone who just wants to enjoy the moment without the ABV.",
   },
   {
     q: "What's the alcohol content?",
-    a: "Our wine and spirit-based cocktails (Chapman and Pineapple Rum) are 14% ALC/VOL — real cocktail energy in every 300ml pouch. NITECAP Zero is 0%.",
+    a: "Our wine and spirit-based cocktails (Chapman and Pineapple Rum) are 14% ALC/VOL. Real cocktail energy in every 200ml pouch. NITECAP Zero is 0%.",
   },
   {
     q: "Can I order in bulk for events?",
@@ -31,7 +31,7 @@ const faqs = [
   },
   {
     q: "How should I store NITECAP?",
-    a: "Best served chilled. Store in the fridge or pack with ice for outdoor events. Once opened, consume immediately — but you won't have a problem finishing it.",
+    a: "Best served chilled. Store in the fridge or pack with ice for outdoor events. Once opened, consume immediately. But you won't have a problem finishing it.",
   },
   {
     q: "Is NITECAP available at events or pop-ups?",

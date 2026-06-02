@@ -11,7 +11,7 @@ const products = [
     id: "chapman",
     name: "BAD DECISIONS, GOOD STORIES",
     flavor: "Chapman",
-    description: "The Nigerian classic. Deep ruby red. The one that started it all — no cap.",
+    description: "The Nigerian classic. Deep ruby red. The one that started it all. No cap.",
     accentColor: "#DC143C",
     glowColor: "rgba(220,20,60,0.25)",
     badge: "Signature",
@@ -33,7 +33,7 @@ const products = [
     id: "sea-breeze",
     name: "LAST ROUND ENERGY",
     flavor: "Sea Breeze",
-    description: "Cool blue. Crisp. The kind of energy that keeps the night going — or the afternoon, we don't judge.",
+    description: "Cool blue. Crisp. The kind of energy that keeps the night going. Or the afternoon, we don't judge.",
     accentColor: "#1E90FF",
     glowColor: "rgba(30,144,255,0.25)",
     badge: "Refreshing",
@@ -66,7 +66,7 @@ const products = [
     id: "amaretto-sour",
     name: "ONE MORE FOR THE ROAD",
     flavor: "Amaretto Sour",
-    description: "Golden amber. Sweet and tangy. The one you say is your last — it never is.",
+    description: "Golden amber. Sweet and tangy. The one you say is your last. It never is.",
     accentColor: "#D97706",
     glowColor: "rgba(217,119,6,0.25)",
     badge: "Bold",
@@ -184,7 +184,7 @@ export default function Products() {
                   </div>
                   <div className="w-px h-3 bg-white/10" />
                   <div className="text-xs text-white/30">
-                    <span className="font-bold text-white/60">300</span>ml
+                    <span className="font-bold text-white/60">200</span>ml
                   </div>
                 </div>
                 <a
