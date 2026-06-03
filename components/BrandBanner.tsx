@@ -18,7 +18,7 @@ export default function BrandBanner() {
       >
         <Image
           src="/images/hero-banner.png"
-          alt="NITECAP — Open The Moment. The Potato mascot with Chapman, Pineapple Rum, and NITECAP Zero pouches"
+          alt="NITECAP — Open The Moment. The Potato mascot with the full cocktail and mocktail lineup"
           width={1774}
           height={887}
           className="w-full h-auto"

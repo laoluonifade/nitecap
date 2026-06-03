@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "NITECAP — Open The Moment | Premixed Cocktails In A Pouch",
+  title: "NITECAP — Open The Moment | Portable Cocktails & Mocktails",
   description:
-    "NITECAP is a premixed cocktail and mocktail brand in a pouch — built for spontaneous moments. No cap. Just NITECAP. Order now, delivering across Nigeria.",
+    "NITECAP is a portable cocktail and mocktail brand in a pouch. Good drinks. Good stories. Questionable decisions. Cocktails and mocktails. Delivering across Nigeria.",
   keywords: [
     "cocktail delivery Nigeria",
     "cocktails Nigeria",

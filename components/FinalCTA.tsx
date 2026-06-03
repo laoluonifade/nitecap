@@ -109,15 +109,15 @@ export default function FinalCTA() {
           transition={{ duration: 0.6, delay: 0.9 }}
           className="mt-16 flex flex-wrap items-center justify-center gap-6 text-white/20 text-xs tracking-widest uppercase"
         >
-          <span>🍒 Chapman</span>
-          <span className="text-purple-700">✦</span>
-          <span>🍊 Sex On The Beach</span>
-          <span className="text-purple-700">✦</span>
-          <span>💙 Sea Breeze</span>
+          <span>🍹 Chapman</span>
           <span className="text-purple-700">✦</span>
           <span>🟢 Virgin Mojito</span>
           <span className="text-purple-700">✦</span>
+          <span>🍊 Sex On The Beach</span>
+          <span className="text-purple-700">✦</span>
           <span>🥃 Amaretto Sour</span>
+          <span className="text-purple-700">✦</span>
+          <span>⭐ Pornstar Martini</span>
         </motion.div>
       </div>
     </section>

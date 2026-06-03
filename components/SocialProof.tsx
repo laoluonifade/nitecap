@@ -9,10 +9,10 @@ const reviews = [
     handle: "@temi.ade",
     name: "Temi A.",
     review:
-      "Brought these to a rooftop party and everyone lost their minds 🔥 The Chapman flavor is something else. We finished all four in 20 minutes.",
+      "Brought these to a rooftop party and everyone lost their minds 🔥 The Sex On The Beach went first. We finished all six in 20 minutes.",
     stars: 5,
-    tag: "Chapman",
-    tagColor: "#DC143C",
+    tag: "Sex On The Beach",
+    tagColor: "#F97316",
     time: "2d ago",
   },
   {
