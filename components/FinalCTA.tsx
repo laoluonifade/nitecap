@@ -3,7 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-const ORDER_LINK = "https://paystack.shop/pay/nitecapcocktail";
+const ORDER_LINK = "https://paystack.shop/nitecapcocktail";
 
 export default function FinalCTA() {
   const ref = useRef<HTMLDivElement>(null);

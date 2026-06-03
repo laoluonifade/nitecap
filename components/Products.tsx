@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-const ORDER_LINK = "https://paystack.shop/pay/nitecapcocktail";
+const ORDER_LINK = "https://paystack.shop/nitecapcocktail";
 
 const mocktails = [
   {

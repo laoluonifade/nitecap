@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useRef, useState, useEffect } from "react";
 import { ArrowDown } from "lucide-react";
 
-const ORDER_LINK = "https://paystack.shop/pay/nitecapcocktail";
+const ORDER_LINK = "https://paystack.shop/nitecapcocktail";
 
 const floatingStickers = [
   { emoji: "🍹", x: "8%", y: "12%", size: "text-3xl", delay: 0, duration: 5, rotate: 12 },

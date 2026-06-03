@@ -40,7 +40,7 @@ export default function Footer() {
 
           {/* CTA */}
           <a
-            href="https://paystack.shop/pay/nitecapcocktail"
+            href="https://paystack.shop/nitecapcocktail"
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0 bg-purple-700/30 hover:bg-purple-600 border border-purple-700/50 text-purple-200 hover:text-white text-xs font-bold tracking-[0.2em] uppercase px-6 py-3 rounded-full transition-all duration-300"
