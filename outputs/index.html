@@ -3,37 +3,186 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#FFF0DC" />
-  <title>Nitecap — Ready-to-drink cocktails</title>
+  <meta name="theme-color" content="#ffffff" />
+  <title>Nitecap — Better than a buzz</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <nav class="site-nav" aria-label="Main">
-    <a href="index.html" class="nav-brand">
+<body class="home-cc">
+  <header class="cc-header">
+    <a href="index.html" class="cc-logo">
       <img src="nitecap-logo.jpg" alt="Nitecap" />
     </a>
-    <div class="nav-links">
-      <a href="products.html">Products</a>
+    <nav class="cc-nav" aria-label="Main">
+      <a href="#flavours">Flavours</a>
       <a href="stores.html">Where to Buy</a>
       <a href="events.html">Events</a>
-      <a class="nav-cta" href="https://app.zappie.ai/order/nitecaptailslimited/yababranch?menu_id=jq7lM2hNMAUbctmpGYJP1&menu_layout=LIST&pickup=false" target="_blank" rel="noreferrer">Order now</a>
-    </div>
-  </nav>
+    </nav>
+    <a class="cc-order" href="https://app.zappie.ai/order/nitecaptailslimited/yababranch?menu_id=jq7lM2hNMAUbctmpGYJP1&menu_layout=LIST&pickup=false" target="_blank" rel="noreferrer">Order now</a>
+  </header>
 
-  <main class="home-hero">
-    <img class="brand-logo" src="nitecap-logo.jpg" alt="Nitecap" />
-    <h1 class="tagline">Better than a buzz</h1>
-    <p class="sub">Ready-to-drink cocktails & mocktails. No mixing. Just chill, serve and enjoy.</p>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="https://app.zappie.ai/order/nitecaptailslimited/yababranch?menu_id=jq7lM2hNMAUbctmpGYJP1&menu_layout=LIST&pickup=false" target="_blank" rel="noreferrer">Order direct</a>
-      <a class="btn btn-secondary" href="stores.html">Where to buy</a>
+  <section class="hero-slider" aria-label="Featured">
+    <div class="slider-track" id="sliderTrack">
+      <article class="slide is-active" data-slide="0">
+        <img src="mojito-mood.jpg" alt="" class="slide-bg" />
+        <div class="slide-shade"></div>
+        <div class="slide-copy">
+          <p class="slide-kicker">Ready to drink</p>
+          <h1>Better than a buzz.<br />Time for a <em>Nitecap</em>.</h1>
+          <p class="slide-sub">Chilled cocktails &amp; mocktails. No mixing. Just serve.</p>
+          <a class="slide-cta" href="https://app.zappie.ai/order/nitecaptailslimited/yababranch?menu_id=jq7lM2hNMAUbctmpGYJP1&menu_layout=LIST&pickup=false" target="_blank" rel="noreferrer">Order direct</a>
+        </div>
+      </article>
+      <article class="slide" data-slide="1">
+        <img src="pineapple-express.jpg" alt="" class="slide-bg" />
+        <div class="slide-shade"></div>
+        <div class="slide-copy">
+          <p class="slide-kicker">Tropical night</p>
+          <h1>Pine Express.<br />Smooth the rest of the way.</h1>
+          <p class="slide-sub">Pineapple-forward. Built for the long night.</p>
+          <a class="slide-cta" href="#flavours">See the lineup</a>
+        </div>
+      </article>
+      <article class="slide" data-slide="2">
+        <img src="pornstar-martini.jpg" alt="" class="slide-bg" />
+        <div class="slide-shade"></div>
+        <div class="slide-copy">
+          <p class="slide-kicker">Events &amp; after-parties</p>
+          <h1>No bar setup.<br />Just chill and serve.</h1>
+          <p class="slide-sub">Weddings, launches, dinners — from 50 cans up.</p>
+          <a class="slide-cta" href="events.html">Plan an event</a>
+        </div>
+      </article>
     </div>
-  </main>
+    <button type="button" class="slider-arrow prev" id="prevSlide" aria-label="Previous slide">‹</button>
+    <button type="button" class="slider-arrow next" id="nextSlide" aria-label="Next slide">›</button>
+    <div class="slider-dots" id="sliderDots" role="tablist" aria-label="Slides">
+      <button type="button" class="dot is-active" data-go="0" aria-label="Slide 1"></button>
+      <button type="button" class="dot" data-go="1" aria-label="Slide 2"></button>
+      <button type="button" class="dot" data-go="2" aria-label="Slide 3"></button>
+    </div>
+  </section>
 
-  <footer class="site-footer">
-    <a href="mailto:hi@nitecapcocktail.com">hi@nitecapcocktail.com</a>
-    · <a href="https://instagram.com/nitecapcocktail" target="_blank" rel="noopener">@nitecapcocktail</a>
-    · <a href="https://nitecapcocktail.com">nitecapcocktail.com</a>
+  <section class="flavours" id="flavours">
+    <div class="section-head">
+      <p class="eyebrow">The lineup</p>
+      <h2>Pick your kind of trouble</h2>
+      <p>Five cocktails and one mocktail. Same can. Same chill. Every time.</p>
+    </div>
+    <div class="flavour-grid">
+      <article class="flavour-card">
+        <img src="mojito-mood.jpg" alt="Mojito Mood" />
+        <div class="flavour-body">
+          <span class="kind">Cocktail</span>
+          <h3>Mojito Mood</h3>
+          <p>Mint, lime, a cool finish. The one you start with when the night is still open.</p>
+        </div>
+      </article>
+      <article class="flavour-card">
+        <img src="pineapple-express.jpg" alt="Pine Express" />
+        <div class="flavour-body">
+          <span class="kind">Cocktail</span>
+          <h3>Pine Express</h3>
+          <p>Pineapple first. Smooth the rest of the way. Tropical without trying too hard.</p>
+        </div>
+      </article>
+      <article class="flavour-card">
+        <img src="strawberry-bliss.jpg" alt="Strawberry Rush" />
+        <div class="flavour-body">
+          <span class="kind">Cocktail</span>
+          <h3>Strawberry Rush</h3>
+          <p>Bright strawberry, sweet without getting sticky. Built for the table and the after-party.</p>
+        </div>
+      </article>
+      <article class="flavour-card">
+        <img src="pornstar-martini.jpg" alt="Passion Star" />
+        <div class="flavour-body">
+          <span class="kind">Cocktail</span>
+          <h3>Passion Star</h3>
+          <p>Passionfruit, bold and fruity — inspired by the classic Pornstar Martini, ready in a can.</p>
+        </div>
+      </article>
+      <article class="flavour-card">
+        <img src="long-island.jpg" alt="Long Nite" />
+        <div class="flavour-body">
+          <span class="kind">Cocktail</span>
+          <h3>Long Nite</h3>
+          <p>Citrus-forward and unapologetic. Made for staying out past the sensible hour.</p>
+        </div>
+      </article>
+      <article class="flavour-card">
+        <img src="strawberry-bliss.jpg" alt="Strawberry Bliss" />
+        <div class="flavour-body">
+          <span class="kind mocktail">Mocktail</span>
+          <h3>Strawberry Bliss</h3>
+          <p>The same fruit energy, none of the alcohol. For the designated driver and the long night.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="bottom-band">
+    <div class="bottom-inner">
+      <p class="bottom-kicker">Lagos · Direct</p>
+      <h2>Good drinks. Good stories.<br />Questionable decisions.</h2>
+      <p class="bottom-sub">Order from our storefront first. Or find us on Chowdeck and, soon, Mano and Spar Lekki.</p>
+      <div class="bottom-actions">
+        <a class="btn-fill" href="https://app.zappie.ai/order/nitecaptailslimited/yababranch?menu_id=jq7lM2hNMAUbctmpGYJP1&menu_layout=LIST&pickup=false" target="_blank" rel="noreferrer">Order direct</a>
+        <a class="btn-ghost" href="stores.html">Where to buy</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="cc-footer">
+    <div class="footer-brand">
+      <img src="nitecap-logo.jpg" alt="" />
+      <p>Nitecap · Ready-to-drink cocktails from Lagos</p>
+    </div>
+    <div class="footer-links">
+      <a href="#flavours">Flavours</a>
+      <a href="stores.html">Where to Buy</a>
+      <a href="events.html">Events</a>
+      <a href="mailto:hi@nitecapcocktail.com">hi@nitecapcocktail.com</a>
+      <a href="https://instagram.com/nitecapcocktail" target="_blank" rel="noopener">Instagram</a>
+    </div>
+    <p class="footer-copy">© 2026 Nitecap. Better than a buzz.</p>
   </footer>
+
+  <script>
+    (function () {
+      var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+      var dots = Array.prototype.slice.call(document.querySelectorAll('.dot'));
+      var i = 0;
+      var timer;
+
+      function go(n) {
+        i = (n + slides.length) % slides.length;
+        slides.forEach(function (s, idx) {
+          s.classList.toggle('is-active', idx === i);
+        });
+        dots.forEach(function (d, idx) {
+          d.classList.toggle('is-active', idx === i);
+        });
+      }
+
+      function next() { go(i + 1); }
+      function prev() { go(i - 1); }
+
+      function reset() {
+        clearInterval(timer);
+        timer = setInterval(next, 6000);
+      }
+
+      document.getElementById('nextSlide').addEventListener('click', function () { next(); reset(); });
+      document.getElementById('prevSlide').addEventListener('click', function () { prev(); reset(); });
+      dots.forEach(function (d) {
+        d.addEventListener('click', function () {
+          go(parseInt(d.getAttribute('data-go'), 10));
+          reset();
+        });
+      });
+
+      reset();
+    })();
+  </script>
 </body>
 </html>
