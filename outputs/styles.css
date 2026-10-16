@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,800;9..144,900&display=swap');
 
-:root { --paper: #f3f0ea; --ink: #382f23; --cream: #fff0c9; --accent: #2d6a4f; }
+:root { --paper: #FFF0DC; --ink: #382f23; --cream: #fff0c9; --accent: #2d6a4f; }
 * { box-sizing: border-box; }
 html, body { min-height: 100%; }
 body { margin: 0; background: var(--paper); color: var(--ink); }
