@@ -229,16 +229,18 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 }
 
 .store-card.soon-card {
-  opacity: 0.78;
+  opacity: 0.85;
 }
 
-.store-logo {
-  font-family: 'DM Mono', monospace;
-  font-weight: 500;
-  font-size: 15px;
-  letter-spacing: 0.8px;
-  margin-bottom: 10px;
-  color: var(--ink);
+.partner-logo {
+  margin-bottom: 12px;
+  line-height: 0;
+}
+
+.partner-logo svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 .store-status {
