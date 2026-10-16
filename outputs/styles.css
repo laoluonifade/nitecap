@@ -21,8 +21,18 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
   display: block;
   width: min(43vw, 240px);
   height: auto;
-  /* mix-blend-mode removed — new inverted logo renders cleanly without it */
 }
+
+.brand-text {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: clamp(42px, 12vw, 72px);
+  letter-spacing: -0.03em;
+  margin: 0;
+  color: var(--ink);
+  line-height: 1;
+}
+
 .divider { width: 46px; height: 2px; margin: clamp(75px, 9svh, 115px) 0 clamp(49px, 6svh, 76px); background: var(--ink); }
 
 .locations { width: min(100%, 335px); display: grid; gap: 29px; }
