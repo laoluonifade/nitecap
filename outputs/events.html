@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#efede8" />
+  <title>Nitecap — Event Guide</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .events-page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      font-family: 'DM Mono', monospace;
+    }
+    .events-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .events-header a.back {
+      display: inline-block;
+      margin-bottom: 32px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 1px;
+      opacity: 0.7;
+    }
+    .events-header a.back:hover { opacity: 1; }
+    .events-header h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      font-size: clamp(32px, 8vw, 48px);
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+      color: #2d6a4f;
+    }
+    .events-header .tagline {
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #c2185b;
+      margin: 0 0 24px;
+    }
+    .events-header p {
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 520px;
+      margin: 0 auto;
+      opacity: 0.85;
+    }
+    .section {
+      margin-bottom: 56px;
+    }
+    .section h2 {
+      font-family: 'Fraunces', serif;
+      font-weight: 800;
+      font-size: clamp(22px, 5vw, 28px);
+      margin: 0 0 20px;
+      letter-spacing: -0.01em;
+    }
+    .menu-grid {
+      display: grid;
+      gap: 16px;
+    }
+    .menu-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 16px;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid rgb(56 47 35 / 10%);
+    }
+    .menu-item .flavor {
+      width: 8px;
+      height: 100%;
+      min-height: 48px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .menu-item h3 {
+      margin: 0 0 4px;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    .menu-item p {
+      margin: 0;
+      font-size: 13px;
+      opacity: 0.75;
+      line-height: 1.4;
+    }
+    .cocktails-label, .mocktails-label {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 24px 0 12px;
+      font-weight: 500;
+    }
+    .cocktails-label { color: #2d6a4f; }
+    .mocktails-label { color: #c2185b; }
+    .pricing-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: #1a1a1a;
+      color: #f3f0ea;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .pricing-table th {
+      text-align: left;
+      padding: 14px 16px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      font-size: 12px;
+      text-transform: uppercase;
+      border-bottom: 2px solid #2d6a4f;
+    }
+    .pricing-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgb(255 255 255 / 10%);
+    }
+    .pricing-table tr:last-child td { border-bottom: none; }
+    .pricing-note {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #2d6a4f;
+      font-weight: 500;
+    }
+    .use-cases {
+      display: grid;
+      gap: 12px;
+    }
+    .use-case {
+      padding: 16px 20px;
+      background: #1a1a1a;
+      color: #f3f0ea;
+      border-radius: 12px;
+    }
+    .use-case h3 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: #f4d35e;
+      font-weight: 500;
+    }
+    .use-case p {
+      margin: 0;
+      font-size: 13px;
+      opacity: 0.85;
+      line-height: 1.4;
+    }
+    .guide-list, .why-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .guide-list li, .why-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgb(56 47 35 / 12%);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .guide-list li:last-child, .why-list li:last-child { border-bottom: none; }
+    .why-list li strong { display: inline-block; min-width: 140px; }
+    .order-box {
+      background: #fff;
+      border: 1px solid rgb(56 47 35 / 15%);
+      border-radius: 12px;
+      padding: 24px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .order-box p { margin: 0 0 12px; }
+    .cta {
+      text-align: center;
+      margin-top: 48px;
+      padding: 32px 24px;
+      background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%);
+      color: #fff;
+      border-radius: 16px;
+    }
+    .cta h2 {
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+    .cta p {
+      margin: 0 0 16px;
+      opacity: 0.9;
+      font-size: 14px;
+    }
+    .cta a {
+      display: inline-block;
+      padding: 12px 28px;
+      background: #f4d35e;
+      color: #1a1a1a;
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 1px;
+      border-radius: 999px;
+      font-size: 14px;
+    }
+    .cta a:hover { opacity: 0.9; }
+    .footer-note {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 12px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="events-page">
+    <header class="events-header">
+      <a href="index.html" class="back">← Back to Nitecap</a>
+      <h1>Nitecap for events</h1>
+      <p class="tagline">Better than a buzz</p>
+      <p>Ready-to-drink cocktails &amp; mocktails made for parties, weddings, corporate events, festivals, dinners and celebrations.<br><strong>No mixing. No complicated bar setup. Just chill, serve and enjoy.</strong></p>
+    </header>
+
+    <section class="section">
+      <h2>The Menu</h2>
+      <div class="cocktails-label">Cocktails</div>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div class="flavor" style="background:#7cb342"></div>
+          <div>
+            <h3>MOJITO MOOD</h3>
+            <p>A refreshing, minty mojito-inspired cocktail.</p>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flavor" style="background:#f9a825"></div>
+          <div>
+            <h3>PINE EXPRESS</h3>
+            <p>A tropical pineapple-forward cocktail with a smooth, refreshing finish.</p>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flavor" style="background:#e53935"></div>
+          <div>
+            <h3>STRAWBERRY RUSH</h3>
+            <p>A fruity strawberry cocktail with a sweet, vibrant taste.</p>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flavor" style="background:#fbc02d"></div>
+          <div>
+            <h3>PASSION STAR</h3>
+            <p>A boldly fruity passionfruit cocktail inspired by the classic Pornstar Martini.</p>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flavor" style="background:#5d4037"></div>
+          <div>
+            <h3>LONG NITE</h3>
+            <p>A bold, citrus-forward cocktail made for the long night.</p>
+          </div>
+        </div>
+      </div>
+      <div class="mocktails-label">Mocktails</div>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div class="flavor" style="background:#c2185b"></div>
+          <div>
+            <h3>STRAWBERRY BLISS</h3>
+            <p>A sweet, fruity strawberry mocktail with a refreshing finish.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Event Pricing</h2>
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>Quantity</th>
+            <th>Cocktails</th>
+            <th>Mocktails</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>50–100 cans</td>
+            <td>₦4,000</td>
+            <td>₦3,500</td>
+          </tr>
+          <tr>
+            <td>100–200 cans</td>
+            <td>₦3,750</td>
+            <td>₦3,200</td>
+          </tr>
+          <tr>
+            <td>250–500 cans</td>
+            <td>₦3,500</td>
+            <td>₦2,800</td>
+          </tr>
+          <tr>
+            <td>500+ cans</td>
+            <td>₦3,000</td>
+            <td>₦2,400</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="pricing-note">Mix &amp; match flavors across your order.</p>
+    </section>
+
+    <section class="section">
+      <h2>How Nitecap Works</h2>
+      <div class="use-cases">
+        <div class="use-case">
+          <h3>Welcome Drinks</h3>
+          <p>Give guests something exciting as they arrive.</p>
+        </div>
+        <div class="use-case">
+          <h3>Table Service</h3>
+          <p>Place chilled Nitecap on tables for guests to grab and enjoy.</p>
+        </div>
+        <div class="use-case">
+          <h3>The Bar &amp; After-Party</h3>
+          <p>Add alongside your bar menu as a fast option for guests who want a cocktail without the wait.</p>
+        </div>
+        <div class="use-case">
+          <h3>Large Events</h3>
+          <p>Perfect for festivals, corporate events, and launches where convenient service matters.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Ordering Guide</h2>
+      <p style="font-size:14px; margin-bottom:12px; opacity:0.8;">How many cans should you order?</p>
+      <ul class="guide-list">
+        <li><strong>50 guests:</strong> 50–75 cans</li>
+        <li><strong>100 guests:</strong> 100–150 cans</li>
+        <li><strong>200 guests:</strong> 200–300 cans</li>
+        <li><strong>500 guests:</strong> 500–750 cans</li>
+      </ul>
+      <p style="font-size:13px; margin-top:16px; opacity:0.7;">Final quantities depend on the number of guests, event duration and what other drinks will be available.</p>
+    </section>
+
+    <section class="section">
+      <h2>Why Nitecap?</h2>
+      <ul class="why-list">
+        <li><strong>Ready to serve:</strong> No prep required</li>
+        <li><strong>Consistent:</strong> Every can delivers the same drink</li>
+        <li><strong>Easy to stock:</strong> Simple to chill, transport and serve</li>
+        <li><strong>Something different:</strong> Give your guests a fun alternative to the usual event drinks</li>
+        <li><strong>Great for large events:</strong> Fast service without the need for a large cocktail-making team</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Event Ordering</h2>
+      <div class="order-box">
+        <p>To prepare your order, we’ll need your:</p>
+        <p><strong>Event date · Location · Expected number of guests · Quantity required · Preferred flavours · Delivery requirements</strong></p>
+        <p style="margin-bottom:0; opacity:0.8;">For large-scale events and special requirements, speak with the Nitecap team about available options.</p>
+      </div>
+    </section>
+
+    <div class="cta">
+      <h2>Make it a Nitecap event!</h2>
+      <p>Good drinks. Good stories. Questionable decisions.</p>
+      <a href="https://app.zappie.ai/order/nitecaptailslimited/yababranch?menu_id=jq7lM2hNMAUbctmpGYJP1&menu_layout=LIST&pickup=false" target="_blank" rel="noreferrer">Order now</a>
+    </div>
+
+    <p class="footer-note">@nitecapcocktail · nitecapcocktail.com</p>
+  </div>
+</body>
+</html>
