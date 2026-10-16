@@ -10,40 +10,41 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: clamp(100px, 18svh, 240px) 24px 48px;
+  padding: clamp(80px, 14svh, 180px) 24px 56px;
   background:
-    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 32%), transparent 29%),
-    radial-gradient(circle at 80% 65%, rgb(214 207 196 / 23%), transparent 30%),
+    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 28%), transparent 29%),
+    radial-gradient(circle at 80% 65%, rgb(214 207 196 / 18%), transparent 30%),
     var(--paper);
 }
 
 .brand-logo {
   display: block;
-  width: min(43vw, 240px);
+  width: min(40vw, 220px);
   height: auto;
 }
 
 .divider {
-  width: 46px;
-  height: 2px;
-  margin: clamp(44px, 6svh, 80px) 0 clamp(36px, 5svh, 64px);
+  width: 40px;
+  height: 1.5px;
+  margin: clamp(36px, 5svh, 56px) 0 clamp(32px, 4.5svh, 52px);
   background: var(--ink);
+  opacity: 0.85;
 }
 
 .locations {
-  width: min(100%, 335px);
+  width: min(100%, 320px);
   display: grid;
-  gap: 29px;
+  gap: 26px;
 }
 
 .locations a {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 26px;
   color: var(--ink);
   text-decoration: none;
-  font: 500 clamp(16px, 4vw, 20px)/1 'DM Mono', monospace;
-  letter-spacing: 1.2px;
+  font: 500 clamp(15px, 3.8vw, 18px)/1 'DM Mono', monospace;
+  letter-spacing: 1.1px;
 }
 
 .locations a:focus-visible {
@@ -56,8 +57,8 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 
 .soon {
   display: inline-block;
-  margin: 8px 0 0 2px;
-  padding: 4px 7px;
+  margin: 7px 0 0 2px;
+  padding: 3px 6px;
   border: 1px solid currentColor;
   border-radius: 999px;
   font: 500 9px/1 'DM Mono', monospace;
@@ -67,19 +68,19 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 }
 
 .nigeria-icon {
-  width: 38px; height: 34px;
+  width: 36px; height: 32px;
   display: grid; place-items: center;
   flex: 0 0 auto;
-  border: 1px solid rgb(56 47 35 / 18%);
-  border-radius: 12px 16px 12px 16px;
+  border: 1px solid rgb(56 47 35 / 16%);
+  border-radius: 11px 15px 11px 15px;
   background: #fff9ed;
-  font-size: 21px;
+  font-size: 19px;
   transform: rotate(-6deg);
-  box-shadow: 2px 3px 0 rgb(56 47 35 / 12%);
+  box-shadow: 2px 3px 0 rgb(56 47 35 / 10%);
 }
 
 .globe-icon {
-  width: 34px; height: 34px;
+  width: 32px; height: 32px;
   display: inline-block;
   flex: 0 0 auto;
   border: 2px solid var(--ink);
@@ -90,13 +91,13 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 .globe-icon::after {
   content: '';
   position: absolute;
-  inset: -2px 8px;
+  inset: -2px 7px;
   border-left: 1.5px solid var(--ink);
   border-right: 1.5px solid var(--ink);
   border-radius: 50%;
 }
 .globe-icon::after {
-  inset: 14px -2px auto;
+  inset: 13px -2px auto;
   height: 1.5px;
   border: 0;
   background: var(--ink);
@@ -104,50 +105,50 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 }
 
 .event-icon {
-  width: 38px; height: 34px;
+  width: 36px; height: 32px;
   display: grid; place-items: center;
   flex: 0 0 auto;
-  border: 1px solid rgb(56 47 35 / 18%);
-  border-radius: 12px 16px 12px 16px;
+  border: 1px solid rgb(56 47 35 / 16%);
+  border-radius: 11px 15px 11px 15px;
   background: #e8f5e9;
-  font-size: 18px;
+  font-size: 16px;
   transform: rotate(4deg);
-  box-shadow: 2px 3px 0 rgb(56 47 35 / 12%);
+  box-shadow: 2px 3px 0 rgb(56 47 35 / 10%);
   color: var(--accent);
 }
 
-.event-guide-link { margin-top: 8px; }
+.event-guide-link { margin-top: 6px; }
 
-/* Product showcase */
+/* Product showcase — more intentional */
 .product-showcase {
-  margin-top: clamp(56px, 9svh, 96px);
+  margin-top: clamp(48px, 7svh, 72px);
   width: 100%;
-  max-width: 780px;
+  max-width: 860px;
   text-align: center;
-  padding: 0 12px;
+  padding: 0 16px;
 }
 
 .product-heading {
   font-family: 'DM Mono', monospace;
   font-weight: 500;
-  font-size: clamp(13px, 3.2vw, 15px);
-  letter-spacing: 1.6px;
+  font-size: clamp(12px, 2.8vw, 14px);
+  letter-spacing: 2.2px;
   text-transform: uppercase;
   color: var(--ink);
-  opacity: 0.72;
-  margin: 0 0 22px;
+  opacity: 0.55;
+  margin: 0 0 28px;
 }
 
 .product-strip {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: clamp(12px, 2.2vw, 22px);
+  align-items: flex-end;
+  gap: clamp(14px, 2.4vw, 24px);
   flex-wrap: nowrap;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: 8px 4px 12px;
+  padding: 12px 4px 8px;
 }
 
 .product-strip::-webkit-scrollbar {
@@ -155,25 +156,29 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 }
 
 .product-strip img {
-  width: clamp(100px, 18vw, 140px);
-  height: clamp(100px, 18vw, 140px);
+  width: clamp(112px, 16.5vw, 156px);
+  height: clamp(112px, 16.5vw, 156px);
   object-fit: cover;
-  border-radius: 20px;
-  box-shadow: 0 10px 24px rgb(56 47 35 / 13%);
+  border-radius: 22px;
+  box-shadow:
+    0 4px 6px rgb(56 47 35 / 4%),
+    0 12px 28px rgb(56 47 35 / 12%);
   flex-shrink: 0;
-  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .product-strip img:hover {
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 16px 32px rgb(56 47 35 / 20%);
+    transform: translateY(-10px);
+    box-shadow:
+      0 8px 12px rgb(56 47 35 / 6%),
+      0 20px 40px rgb(56 47 35 / 16%);
   }
 }
 
 .notice {
   position: fixed;
-  bottom: 34px;
+  bottom: 28px;
   margin: 0;
   opacity: 0;
   transform: translateY(10px);
@@ -187,18 +192,22 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 }
 
 @media (min-width: 700px) {
-  .country-picker { padding-top: clamp(110px, 16svh, 200px); }
+  .country-picker { padding-top: clamp(90px, 13svh, 160px); }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 560px) {
   .product-strip {
-    gap: 10px;
+    gap: 12px;
     justify-content: flex-start;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 6px;
+    padding-right: 6px;
   }
   .product-strip img {
-    width: 96px;
-    height: 96px;
+    width: 108px;
+    height: 108px;
+    border-radius: 18px;
+  }
+  .product-heading {
+    margin-bottom: 20px;
   }
 }
