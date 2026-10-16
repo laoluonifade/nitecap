@@ -10,7 +10,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: clamp(160px, 31svh, 390px) 24px 80px;
+  padding: clamp(120px, 22svh, 280px) 24px 60px;
   background:
     radial-gradient(circle at 30% 20%, rgb(255 255 255 / 32%), transparent 29%),
     radial-gradient(circle at 80% 65%, rgb(214 207 196 / 23%), transparent 30%),
@@ -23,36 +23,148 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
   height: auto;
 }
 
-.brand-text {
-  font-family: 'Fraunces', serif;
-  font-weight: 900;
-  font-size: clamp(42px, 12vw, 72px);
-  letter-spacing: -0.03em;
-  margin: 0;
-  color: var(--ink);
-  line-height: 1;
+.divider {
+  width: 46px;
+  height: 2px;
+  margin: clamp(50px, 7svh, 90px) 0 clamp(40px, 5svh, 70px);
+  background: var(--ink);
 }
 
-.divider { width: 46px; height: 2px; margin: clamp(75px, 9svh, 115px) 0 clamp(49px, 6svh, 76px); background: var(--ink); }
+.locations {
+  width: min(100%, 335px);
+  display: grid;
+  gap: 29px;
+}
 
-.locations { width: min(100%, 335px); display: grid; gap: 29px; }
-.locations a { display: flex; align-items: center; gap: 30px; color: var(--ink); text-decoration: none; font: 500 clamp(16px, 4vw, 20px)/1 'DM Mono', monospace; letter-spacing: 1.2px; }
-.locations a:focus-visible { outline: 2px solid var(--ink); outline-offset: 8px; border-radius: 3px; }
+.locations a {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  color: var(--ink);
+  text-decoration: none;
+  font: 500 clamp(16px, 4vw, 20px)/1 'DM Mono', monospace;
+  letter-spacing: 1.2px;
+}
+
+.locations a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 8px;
+  border-radius: 3px;
+}
+
 .locations a:hover { opacity: .65; }
-.soon { display: inline-block; margin: 8px 0 0 2px; padding: 4px 7px; border: 1px solid currentColor; border-radius: 999px; font: 500 9px/1 'DM Mono', monospace; letter-spacing: .2px; vertical-align: middle; transform: rotate(-3deg); }
 
-.nigeria-icon { width: 38px; height: 34px; display: grid; place-items: center; flex: 0 0 auto; border: 1px solid rgb(56 47 35 / 18%); border-radius: 12px 16px 12px 16px; background: #fff9ed; font-size: 21px; transform: rotate(-6deg); box-shadow: 2px 3px 0 rgb(56 47 35 / 12%); }
-.globe-icon { width: 34px; height: 34px; display: inline-block; flex: 0 0 auto; border: 2px solid var(--ink); border-radius: 50%; position: relative; }
-.globe-icon::before, .globe-icon::after { content: ''; position: absolute; inset: -2px 8px; border-left: 1.5px solid var(--ink); border-right: 1.5px solid var(--ink); border-radius: 50%; }.globe-icon::after { inset: 14px -2px auto; height: 1.5px; border: 0; background: var(--ink); border-radius: 0; }
+.soon {
+  display: inline-block;
+  margin: 8px 0 0 2px;
+  padding: 4px 7px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font: 500 9px/1 'DM Mono', monospace;
+  letter-spacing: .2px;
+  vertical-align: middle;
+  transform: rotate(-3deg);
+}
+
+.nigeria-icon {
+  width: 38px; height: 34px;
+  display: grid; place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid rgb(56 47 35 / 18%);
+  border-radius: 12px 16px 12px 16px;
+  background: #fff9ed;
+  font-size: 21px;
+  transform: rotate(-6deg);
+  box-shadow: 2px 3px 0 rgb(56 47 35 / 12%);
+}
+
+.globe-icon {
+  width: 34px; height: 34px;
+  display: inline-block;
+  flex: 0 0 auto;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  position: relative;
+}
+.globe-icon::before,
+.globe-icon::after {
+  content: '';
+  position: absolute;
+  inset: -2px 8px;
+  border-left: 1.5px solid var(--ink);
+  border-right: 1.5px solid var(--ink);
+  border-radius: 50%;
+}
+.globe-icon::after {
+  inset: 14px -2px auto;
+  height: 1.5px;
+  border: 0;
+  background: var(--ink);
+  border-radius: 0;
+}
 
 .event-icon {
-  width: 38px; height: 34px; display: grid; place-items: center; flex: 0 0 auto;
-  border: 1px solid rgb(56 47 35 / 18%); border-radius: 12px 16px 12px 16px;
-  background: #e8f5e9; font-size: 18px; transform: rotate(4deg);
-  box-shadow: 2px 3px 0 rgb(56 47 35 / 12%); color: var(--accent);
+  width: 38px; height: 34px;
+  display: grid; place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid rgb(56 47 35 / 18%);
+  border-radius: 12px 16px 12px 16px;
+  background: #e8f5e9;
+  font-size: 18px;
+  transform: rotate(4deg);
+  box-shadow: 2px 3px 0 rgb(56 47 35 / 12%);
+  color: var(--accent);
 }
+
 .event-guide-link { margin-top: 8px; }
 
-.notice { position: fixed; bottom: 34px; margin: 0; opacity: 0; transform: translateY(10px); font: 400 12px 'DM Mono', monospace; transition: .2s; pointer-events: none; }.notice:target { opacity: 1; transform: translateY(0); }
+/* Soft product strip */
+.product-strip {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: clamp(60px, 10svh, 110px);
+  padding: 0 16px;
+  flex-wrap: wrap;
+  max-width: 720px;
+}
 
-@media (min-width: 700px) { .country-picker { padding-top: clamp(150px, 25svh, 300px); } }
+.product-strip img {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgb(56 47 35 / 12%);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.product-strip img:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 14px 28px rgb(56 47 35 / 18%);
+}
+
+.notice {
+  position: fixed;
+  bottom: 34px;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  font: 400 12px 'DM Mono', monospace;
+  transition: .2s;
+  pointer-events: none;
+}
+.notice:target {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 700px) {
+  .country-picker { padding-top: clamp(130px, 20svh, 240px); }
+  .product-strip img { width: 110px; height: 110px; }
+  .product-strip { gap: 18px; }
+}
+
+@media (max-width: 420px) {
+  .product-strip img { width: 72px; height: 72px; }
+  .product-strip { gap: 10px; }
+}
