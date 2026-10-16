@@ -174,6 +174,38 @@
       line-height: 1.6;
     }
     .order-box p { margin: 0 0 12px; }
+    .pdf-box {
+      background: #f8f6f1;
+      border: 1.5px dashed #2d6a4f;
+      border-radius: 12px;
+      padding: 28px 24px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .pdf-box h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 800;
+      font-size: 20px;
+      margin: 0 0 8px;
+      color: #2d6a4f;
+    }
+    .pdf-box p {
+      font-size: 14px;
+      margin: 0 0 20px;
+      opacity: 0.8;
+    }
+    .pdf-box a.pdf-btn {
+      display: inline-block;
+      padding: 12px 28px;
+      background: #2d6a4f;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 1px;
+      border-radius: 999px;
+      font-size: 14px;
+    }
+    .pdf-box a.pdf-btn:hover { opacity: 0.9; }
     .cta {
       text-align: center;
       margin-top: 48px;
@@ -193,7 +225,7 @@
       opacity: 0.9;
       font-size: 14px;
     }
-    .cta a {
+    .cta a.order-btn {
       display: inline-block;
       padding: 12px 28px;
       background: #f4d35e;
@@ -203,13 +235,37 @@
       letter-spacing: 1px;
       border-radius: 999px;
       font-size: 14px;
+      margin-bottom: 20px;
     }
-    .cta a:hover { opacity: 0.9; }
+    .cta a.order-btn:hover { opacity: 0.9; }
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px 24px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .contact-links a {
+      color: #f4d35e;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+    .contact-links a:hover {
+      text-decoration: underline;
+    }
     .footer-note {
       text-align: center;
       margin-top: 40px;
       font-size: 12px;
       opacity: 0.6;
+    }
+    .footer-note a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .footer-note a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -219,8 +275,15 @@
       <a href="index.html" class="back">← Back to Nitecap</a>
       <h1>Nitecap for events</h1>
       <p class="tagline">Better than a buzz</p>
-      <p>Ready-to-drink cocktails &amp; mocktails made for parties, weddings, corporate events, festivals, dinners and celebrations.<br><strong>No mixing. No complicated bar setup. Just chill, serve and enjoy.</strong></p>
+      <p>Ready-to-drink cocktails & mocktails made for parties, weddings, corporate events, festivals, dinners and celebrations.<br><strong>No mixing. No complicated bar setup. Just chill, serve and enjoy.</strong></p>
     </header>
+
+    <!-- PDF Download -->
+    <div class="pdf-box">
+      <h3>Full Event Guide PDF</h3>
+      <p>Download the complete guide with menu, pricing tiers, and ordering details.</p>
+      <a class="pdf-btn" href="nitecap-event-guide.pdf" target="_blank" rel="noopener">Download PDF</a>
+    </div>
 
     <section class="section">
       <h2>The Menu</h2>
@@ -307,7 +370,7 @@
           </tr>
         </tbody>
       </table>
-      <p class="pricing-note">Mix &amp; match flavors across your order.</p>
+      <p class="pricing-note">Mix & match flavors across your order.</p>
     </section>
 
     <section class="section">
@@ -322,7 +385,7 @@
           <p>Place chilled Nitecap on tables for guests to grab and enjoy.</p>
         </div>
         <div class="use-case">
-          <h3>The Bar &amp; After-Party</h3>
+          <h3>The Bar & After-Party</h3>
           <p>Add alongside your bar menu as a fast option for guests who want a cocktail without the wait.</p>
         </div>
         <div class="use-case">
@@ -367,10 +430,20 @@
     <div class="cta">
       <h2>Make it a Nitecap event!</h2>
       <p>Good drinks. Good stories. Questionable decisions.</p>
-      <a href="https://app.zappie.ai/order/nitecaptailslimited/yababranch?menu_id=jq7lM2hNMAUbctmpGYJP1&menu_layout=LIST&pickup=false" target="_blank" rel="noreferrer">Order now</a>
+      <a class="order-btn" href="https://app.zappie.ai/order/nitecaptailslimited/yababranch?menu_id=jq7lM2hNMAUbctmpGYJP1&menu_layout=LIST&pickup=false" target="_blank" rel="noreferrer">Order now</a>
+      
+      <div class="contact-links">
+        <a href="mailto:hi@nitecapcocktail.com">hi@nitecapcocktail.com</a>
+        <a href="https://instagram.com/nitecapcocktail" target="_blank" rel="noopener">Instagram @nitecapcocktail</a>
+        <a href="https://x.com/nitecapcocktail" target="_blank" rel="noopener">X / Twitter @nitecapcocktail</a>
+      </div>
     </div>
 
-    <p class="footer-note">@nitecapcocktail · nitecapcocktail.com</p>
+    <p class="footer-note">
+      <a href="mailto:hi@nitecapcocktail.com">hi@nitecapcocktail.com</a> · 
+      <a href="https://instagram.com/nitecapcocktail" target="_blank" rel="noopener">@nitecapcocktail</a> · 
+      <a href="https://nitecapcocktail.com">nitecapcocktail.com</a>
+    </p>
   </div>
 </body>
 </html>
