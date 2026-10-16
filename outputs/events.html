@@ -4,29 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#FFF0DC" />
-  <title>Nitecap — Event Guide</title>
+  <title>Events — Nitecap</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
     .events-page {
       max-width: 720px;
       margin: 0 auto;
-      padding: 48px 24px 80px;
+      padding: 40px 24px 80px;
       font-family: 'DM Mono', monospace;
     }
     .events-header {
       text-align: center;
       margin-bottom: 48px;
     }
-    .events-header a.back {
-      display: inline-block;
-      margin-bottom: 32px;
-      color: var(--ink);
-      text-decoration: none;
-      font-size: 14px;
-      letter-spacing: 1px;
-      opacity: 0.7;
-    }
-    .events-header a.back:hover { opacity: 1; }
     .events-header h1 {
       font-family: 'Fraunces', serif;
       font-weight: 900;
@@ -49,9 +39,7 @@
       margin: 0 auto;
       opacity: 0.85;
     }
-    .section {
-      margin-bottom: 56px;
-    }
+    .section { margin-bottom: 56px; }
     .section h2 {
       font-family: 'Fraunces', serif;
       font-weight: 800;
@@ -59,10 +47,7 @@
       margin: 0 0 20px;
       letter-spacing: -0.01em;
     }
-    .menu-grid {
-      display: grid;
-      gap: 16px;
-    }
+    .menu-grid { display: grid; gap: 16px; }
     .menu-item {
       display: flex;
       gap: 16px;
@@ -74,7 +59,6 @@
     }
     .menu-item .flavor {
       width: 8px;
-      height: 100%;
       min-height: 48px;
       border-radius: 4px;
       flex-shrink: 0;
@@ -129,10 +113,7 @@
       color: #2d6a4f;
       font-weight: 500;
     }
-    .use-cases {
-      display: grid;
-      gap: 12px;
-    }
+    .use-cases { display: grid; gap: 12px; }
     .use-case {
       padding: 16px 20px;
       background: #1a1a1a;
@@ -205,7 +186,6 @@
       border-radius: 999px;
       font-size: 14px;
     }
-    .pdf-box a.pdf-btn:hover { opacity: 0.9; }
     .cta {
       text-align: center;
       margin-top: 48px;
@@ -237,7 +217,6 @@
       font-size: 14px;
       margin-bottom: 20px;
     }
-    .cta a.order-btn:hover { opacity: 0.9; }
     .contact-links {
       display: flex;
       flex-wrap: wrap;
@@ -251,34 +230,29 @@
       text-decoration: none;
       letter-spacing: 0.5px;
     }
-    .contact-links a:hover {
-      text-decoration: underline;
-    }
-    .footer-note {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 12px;
-      opacity: 0.6;
-    }
-    .footer-note a {
-      color: inherit;
-      text-decoration: none;
-    }
-    .footer-note a:hover {
-      text-decoration: underline;
-    }
+    .contact-links a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="index.html" class="nav-brand">
+      <img src="nitecap-logo.jpg" alt="Nitecap" />
+    </a>
+    <div class="nav-links">
+      <a href="products.html">Products</a>
+      <a href="stores.html">Where to Buy</a>
+      <a href="events.html" class="active">Events</a>
+      <a class="nav-cta" href="https://chowdeck.com/store/fola-agoro/restaurants/nitecap-cocktailsfola-agoroaqpxg8" target="_blank" rel="noreferrer">Order now</a>
+    </div>
+  </nav>
+
   <div class="events-page">
     <header class="events-header">
-      <a href="index.html" class="back">← Back to Nitecap</a>
       <h1>Nitecap for events</h1>
       <p class="tagline">Better than a buzz</p>
       <p>Ready-to-drink cocktails & mocktails made for parties, weddings, corporate events, festivals, dinners and celebrations.<br><strong>No mixing. No complicated bar setup. Just chill, serve and enjoy.</strong></p>
     </header>
 
-    <!-- PDF Download -->
     <div class="pdf-box">
       <h3>Full Event Guide PDF</h3>
       <p>Download the complete guide with menu, pricing tiers, and ordering details.</p>
@@ -430,20 +404,19 @@
     <div class="cta">
       <h2>Make it a Nitecap event!</h2>
       <p>Good drinks. Good stories. Questionable decisions.</p>
-      <a class="order-btn" href="https://app.zappie.ai/order/nitecaptailslimited/yababranch?menu_id=jq7lM2hNMAUbctmpGYJP1&menu_layout=LIST&pickup=false" target="_blank" rel="noreferrer">Order now</a>
-      
+      <a class="order-btn" href="https://chowdeck.com/store/fola-agoro/restaurants/nitecap-cocktailsfola-agoroaqpxg8" target="_blank" rel="noreferrer">Order now</a>
       <div class="contact-links">
         <a href="mailto:hi@nitecapcocktail.com">hi@nitecapcocktail.com</a>
         <a href="https://instagram.com/nitecapcocktail" target="_blank" rel="noopener">Instagram @nitecapcocktail</a>
         <a href="https://x.com/nitecapcocktail" target="_blank" rel="noopener">X / Twitter @nitecapcocktail</a>
       </div>
     </div>
-
-    <p class="footer-note">
-      <a href="mailto:hi@nitecapcocktail.com">hi@nitecapcocktail.com</a> · 
-      <a href="https://instagram.com/nitecapcocktail" target="_blank" rel="noopener">@nitecapcocktail</a> · 
-      <a href="https://nitecapcocktail.com">nitecapcocktail.com</a>
-    </p>
   </div>
+
+  <footer class="site-footer">
+    <a href="mailto:hi@nitecapcocktail.com">hi@nitecapcocktail.com</a>
+    · <a href="https://instagram.com/nitecapcocktail" target="_blank" rel="noopener">@nitecapcocktail</a>
+    · <a href="https://nitecapcocktail.com">nitecapcocktail.com</a>
+  </footer>
 </body>
 </html>
