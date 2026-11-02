@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
-  const money = kobo => new Intl.NumberFormat('en-NG', {style:'currency', currency:'NGN', maximumFractionDigits:0}).format(kobo / 100);
+  const money = kobo => new Intl.NumberFormat('en-NG', {style:'currency', currency:'NGN', maximumFractionDigits:2, minimumFractionDigits:0}).format(kobo / 100);
   let catalog, busy = false, paid = false, pending = null, requestId = crypto.randomUUID();
   const cart = {};
   let pollTimer, polls = 0;
