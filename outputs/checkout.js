@@ -77,7 +77,7 @@
       const result = await api('/api/verify', {reference:pending.reference});
       if (result.status === 'paid') {
         paid = true; clearTimeout(pollTimer); pending.amount = result.amount; storage.set(pending);
-        status(`Payment confirmed. Your Nitecap order is received! Total: ${money(result.amount)}. Reference: ${result.reference}. Keep this reference for any questions about delivery.`);
+        status(`Payment confirmed. Your Nitecap order is received! Order total: ${money(result.amount)}. Paid including Paystack fees: ${money(result.charged_amount || result.amount)}. Reference: ${result.reference}. Keep this reference for any questions about delivery.`);
         $('check-payment').hidden = true; $('new-order').hidden = false;
       } else {
         status(`Payment is not confirmed yet. Resume checkout if you haven't paid, or check again if your payment is processing. Reference: ${pending.reference}.`);

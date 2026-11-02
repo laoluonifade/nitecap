@@ -99,6 +99,16 @@ class CheckoutTests(unittest.TestCase):
             with self.subTest(change=change):
                 self.assertEqual(self.request('/api/verify', {'reference': ref})[0], 409)
 
+    def test_customer_processing_fee_must_match_provider_requested_amount(self):
+        ref = self.initialize()
+        self.ledger[ref].update(status='success', requested_amount=1000000, amount=1035354)
+        code, result = self.request('/api/verify', {'reference': ref})
+        self.assertEqual(code, 200)
+        self.assertEqual(result['amount'], 1000000)
+        self.assertEqual(result['charged_amount'], 1035354)
+        self.ledger[ref]['requested_amount'] = 1
+        self.assertEqual(self.request('/api/verify', {'reference': ref})[0], 409)
+
     def test_tampered_order_metadata_is_rejected(self):
         ref = self.initialize()
         self.ledger[ref]['metadata']['nitecap_order']['order']['address'] = 'Attacker address'

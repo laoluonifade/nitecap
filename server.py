@@ -163,7 +163,9 @@ def extract(payment):
     if not isinstance(supplied, str) or not hmac.compare_digest(signature(record), supplied):
         raise Problem("Order integrity check failed. Please contact Nitecap.", 409)
     if (record.get("version") != 1 or record.get("reference") != payment.get("reference")
-            or record.get("amount") != payment.get("amount") or payment.get("currency") != "NGN"):
+            or record.get("amount") != payment.get("requested_amount", payment.get("amount"))
+            or type(payment.get("amount")) is not int or payment["amount"] < record.get("amount", 0)
+            or payment.get("currency") != "NGN"):
         raise Problem("Payment details do not match this order. Please contact Nitecap.", 409)
     return record
 
@@ -218,7 +220,7 @@ def verify(reference):
     payment = result["data"]
     record = extract(payment)
     return {"reference": reference, "status": "paid" if payment.get("status") == "success" else "pending",
-            "amount": record["amount"], "currency": "NGN"}
+            "amount": record["amount"], "charged_amount": payment["amount"], "currency": "NGN"}
 
 
 def list_orders(page):
@@ -232,7 +234,7 @@ def list_orders(page):
         except Problem:
             continue
         orders.append({"reference": record["reference"], "payload": record["order"],
-                       "amount": record["amount"], "created_at": record["created_at"],
+                       "amount": record["amount"], "charged_amount": payment["amount"], "created_at": record["created_at"],
                        "paid_at": payment.get("paid_at") if payment.get("status") == "success" else None,
                        "status": "paid" if payment.get("status") == "success" else payment.get("status", "pending")})
     pagination = result.get("meta", {})
