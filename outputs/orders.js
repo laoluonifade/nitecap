@@ -4,7 +4,7 @@
   async function load() {
     $('admin-status').textContent = 'Loading…';
     try {
-      const response = await fetch('/api/admin/orders?page='+page, {headers:{Authorization:`Bearer ${token}`}});
+      const response = await fetch((location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? '' : 'https://nitecap-checkout.onrender.com')+'/api/admin/orders?page='+page, {headers:{Authorization:`Bearer ${token}`}});
       const result = await response.json();
       if (!response.ok) throw new Error(result.error);
       $('order-rows').replaceChildren();

@@ -11,7 +11,7 @@
     clear() { try { sessionStorage.removeItem('nitecap-payment'); } catch {} }
   };
   async function api(path, payload) {
-    const response = await fetch(path, {method: payload ? 'POST' : 'GET', headers:payload ? {'Content-Type':'application/json'} : {}, body:payload ? JSON.stringify(payload) : undefined});
+    const response = await fetch((location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? '' : 'https://nitecap-checkout.onrender.com') + path, {method: payload ? 'POST' : 'GET', headers:payload ? {'Content-Type':'application/json'} : {}, body:payload ? JSON.stringify(payload) : undefined});
     let data;
     try { data = await response.json(); } catch { throw new Error('Checkout is unavailable. Please email hi@nitecapcocktail.com.'); }
     if (!response.ok) { const error = new Error(data.error || 'Please try again.'); error.reference = data.reference; throw error; }

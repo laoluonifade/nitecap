@@ -123,8 +123,9 @@ def paystack(path, payload=None, missing_ok=False):
                 message = json.loads(error.read()).get("message", "").lower()
             except (ValueError, AttributeError):
                 message = ""
-            if error.code == 404 or message in {"transaction reference not found", "transaction not found"}:
+            if error.code == 404 or ("not found" in message or "invalid transaction reference" in message):
                 return None
+        print("Paystack request rejected: HTTP {} on {}".format(error.code, "verification" if path.startswith("/transaction/verify/") else "initialization"), flush=True)
         raise Problem("Paystack could not complete the request. Please check payment status before retrying.", 502)
     except (URLError, ValueError, TimeoutError):
         raise Problem("Could not reach Paystack. Please check payment status before retrying.", 502)
@@ -234,7 +235,20 @@ def authorized(environ):
         raise Problem("Unauthorized.", 401)
 
 
+def origins():
+    return {os.environ.get("SITE_URL", "").rstrip("/"),
+            "https://nitecapcocktail.com", "https://www.nitecapcocktail.com",
+            "https://nitecap-checkout.onrender.com"} - {""}
+
+
 def app(environ, start_response):
+    original_start = start_response
+    origin = environ.get("HTTP_ORIGIN")
+    if origin in origins():
+        def start_response(status, headers):
+            return original_start(status, headers + [("Access-Control-Allow-Origin", origin),
+                ("Vary", "Origin"), ("Access-Control-Allow-Methods", "GET, POST, OPTIONS"),
+                ("Access-Control-Allow-Headers", "Content-Type, Authorization")])
     try:
         return dispatch(environ, start_response)
     except Problem as error:
@@ -255,6 +269,10 @@ def respond(start, status, value, content_type="application/json; charset=utf-8"
 
 def dispatch(env, start):
     path, method = env.get("PATH_INFO", "/"), env["REQUEST_METHOD"]
+    if method == "OPTIONS" and path.startswith("/api/"):
+        if env.get("HTTP_ORIGIN") not in origins():
+            raise Problem("Request origin not allowed.", 403)
+        return respond(start, 200, {})
     if method == "GET" and path == "/health":
         return respond(start, 200, {"ok": True})
     if method == "GET" and path == "/api/catalog":
@@ -285,7 +303,7 @@ def dispatch(env, start):
                 raise Problem("Invalid signature.", 401)
         else:
             origin = env.get("HTTP_ORIGIN")
-            if origin and origin != os.environ.get("SITE_URL", "").rstrip("/"):
+            if origin and origin not in origins():
                 raise Problem("Request origin not allowed.", 403)
         try:
             payload = json.loads(raw)
