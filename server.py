@@ -128,7 +128,7 @@ def paystack(path, payload=None, missing_ok=False):
             # Diagnostic category only; never print API keys or request/customer data.
             category = next((word for word in ("ip", "permission", "key", "disabled", "blocked") if word in str(provider_message).lower()), "gateway")
             print("Paystack forbidden category: " + category, flush=True)
-        if missing_ok and error.code in (400, 404):
+        if missing_ok and error.code in (400, 403, 404):
             try:
                 message = json.loads(body).get("message", "").lower()
             except (ValueError, AttributeError):

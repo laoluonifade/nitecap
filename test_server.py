@@ -141,7 +141,7 @@ class CheckoutTests(unittest.TestCase):
         self.assertEqual(self.request('/api/orders', self.payload, HTTP_ORIGIN='https://other.example')[0], 403)
 
     def test_missing_provider_reference_with_punctuation_allows_initialization(self):
-        error = HTTPError('https://api.paystack.co/transaction/verify/test', 400, 'Bad Request', {},
+        error = HTTPError('https://api.paystack.co/transaction/verify/test', 403, 'Forbidden', {},
                           io.BytesIO(b'{"status":false,"message":"Transaction reference not found."}'))
         with patch.object(server, 'urlopen', side_effect=error):
             self.assertIsNone(REAL_PAYSTACK('/transaction/verify/test', missing_ok=True))
