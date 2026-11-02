@@ -1,10 +1,10 @@
 (() => {
-  let token = '';
+  let token = '', page = 1;
   const $ = id => document.getElementById(id);
   async function load() {
     $('admin-status').textContent = 'Loading…';
     try {
-      const response = await fetch('/api/admin/orders', {headers:{Authorization:`Bearer ${token}`}});
+      const response = await fetch('/api/admin/orders?page='+page, {headers:{Authorization:`Bearer ${token}`}});
       const result = await response.json();
       if (!response.ok) throw new Error(result.error);
       $('order-rows').replaceChildren();
@@ -14,15 +14,17 @@
           `${p.customer.name}\n${p.customer.email}\n${p.customer.phone}`,
           p.items.map(i => `${i.name} × ${i.quantity}`).join('\n'),
           `${p.fulfilment.label}\n${p.address}\n${p.notes}`,
-          `${order.status.toUpperCase()}\n₦${(order.amount/100).toLocaleString()}\n${order.paid_at ? 'Paid '+new Date(order.paid_at*1000).toLocaleString() : 'Do not fulfil until paid'}\n${order.alert_sent_at ? 'Email alert sent' : order.status === 'paid' ? 'Email alert pending' : ''}`];
+          `${order.status.toUpperCase()}\n₦${(order.amount/100).toLocaleString()}\n${order.paid_at ? 'Paid '+new Date(order.paid_at).toLocaleString() : 'Do not fulfil until paid'}}`];
         for (const value of cells) { const td = document.createElement('td'); td.textContent = value; tr.append(td); }
         $('order-rows').append(tr);
       }
       $('orders').hidden = false; $('refresh').hidden = false; $('logout').hidden = false; $('login').hidden = true;
-      $('admin-status').textContent = `${result.orders.length} recent orders. Only PAID orders are ready for fulfilment.`;
+      $('admin-status').textContent = `Page ${page}: ${result.orders.length} Nitecap orders. Only PAID orders are ready for fulfilment.`; $('previous').hidden=page===1; $('next').hidden=!result.has_more;
     } catch (error) { $('admin-status').textContent = error.message || 'Unable to load orders.'; }
   }
-  $('login').addEventListener('submit', event => { event.preventDefault(); token = $('token').value; $('token').value = ''; load(); });
+  $('login').addEventListener('submit', event => { event.preventDefault(); page=1; token = $('token').value; $('token').value = ''; load(); });
+  $('previous').addEventListener('click', () => { page--; load(); });
+  $('next').addEventListener('click', () => { page++; load(); });
   $('refresh').addEventListener('click', load);
-  $('logout').addEventListener('click', () => { token=''; $('order-rows').replaceChildren(); $('orders').hidden=true; $('refresh').hidden=true; $('logout').hidden=true; $('login').hidden=false; $('admin-status').textContent='Order desk locked.'; });
+  $('logout').addEventListener('click', () => { token=''; $('order-rows').replaceChildren(); $('orders').hidden=true; $('next').hidden=true; $('previous').hidden=true; $('refresh').hidden=true; $('logout').hidden=true; $('login').hidden=false; $('admin-status').textContent='Order desk locked.'; });
 })();

@@ -1,4 +1,4 @@
-"""Nitecap checkout. Run behind HTTPS using gunicorn; persist ORDER_DB."""
+"""Stateless Nitecap checkout: Paystack retains signed order records."""
 import hashlib
 import hmac
 import json
@@ -6,14 +6,8 @@ import mimetypes
 import os
 from pathlib import Path
 import re
-import secrets
-import smtplib
-import sqlite3
-import ssl
 import time
-from contextlib import contextmanager
-from email.message import EmailMessage
-from urllib.error import URLError
+from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
@@ -33,30 +27,7 @@ PRICE = 500000  # kobo; never accept prices from the browser
 class Problem(Exception):
     def __init__(self, message, status=400):
         self.message, self.status = message, status
-
-
-@contextmanager
-def db():
-    path = Path(os.environ.get("ORDER_DB", "data/orders.sqlite3"))
-    path.parent.mkdir(parents=True, exist_ok=True)
-    connection = sqlite3.connect(path, timeout=15)
-    connection.row_factory = sqlite3.Row
-    connection.execute("PRAGMA journal_mode=WAL")
-    connection.executescript("""
-      CREATE TABLE IF NOT EXISTS orders (
-        reference TEXT PRIMARY KEY, request_id TEXT UNIQUE NOT NULL,
-        payload TEXT NOT NULL, amount INTEGER NOT NULL,
-        status TEXT NOT NULL DEFAULT 'pending', access_code TEXT,
-        created_at INTEGER NOT NULL, paid_at INTEGER);
-      CREATE TABLE IF NOT EXISTS alerts (
-        reference TEXT PRIMARY KEY, sent_at INTEGER,
-        lease_until INTEGER NOT NULL DEFAULT 0, attempts INTEGER NOT NULL DEFAULT 0);
-    """)
-    try:
-        with connection:
-            yield connection
-    finally:
-        connection.close()
+        self.reference = None
 
 
 def fulfilment():
@@ -81,6 +52,7 @@ def ready():
             and os.environ.get("PAYSTACK_SECRET_KEY", "").startswith(("sk_test_", "sk_live_"))
             and os.environ.get("SITE_URL", "").startswith("https://")
             and len(os.environ.get("ADMIN_TOKEN", "")) >= 32
+            and len(os.environ.get("ORDER_SIGNING_KEY", "")) >= 32
             and bool(fulfilment()))
 
 
@@ -134,7 +106,7 @@ def validate(payload):
             "address": address, "notes": notes}, amount
 
 
-def paystack(path, payload=None):
+def paystack(path, payload=None, missing_ok=False):
     req = Request("https://api.paystack.co" + path,
                   data=json.dumps(payload).encode() if payload is not None else None,
                   headers={"Authorization": "Bearer " + os.environ["PAYSTACK_SECRET_KEY"],
@@ -142,11 +114,47 @@ def paystack(path, payload=None):
     try:
         with urlopen(req, timeout=18) as response:
             result = json.load(response)
-        if result.get("status") is not True or not isinstance(result.get("data"), dict):
+        if result.get("status") is not True:
             raise ValueError()
-        return result["data"]
+        return result
+    except HTTPError as error:
+        if missing_ok and error.code in (400, 404):
+            try:
+                message = json.loads(error.read()).get("message", "").lower()
+            except (ValueError, AttributeError):
+                message = ""
+            if error.code == 404 or message in {"transaction reference not found", "transaction not found"}:
+                return None
+        raise Problem("Paystack could not complete the request. Please check payment status before retrying.", 502)
     except (URLError, ValueError, TimeoutError):
-        raise Problem("Could not reach Paystack. Please retry; your order reference is saved.", 502)
+        raise Problem("Could not reach Paystack. Please check payment status before retrying.", 502)
+
+
+def signature(record):
+    key = os.environ.get("ORDER_SIGNING_KEY", "")
+    if len(key) < 32:
+        raise Problem("Checkout is not configured.", 503)
+    canonical = json.dumps(record, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hmac.new(key.encode(), canonical.encode(), hashlib.sha256).hexdigest()
+
+
+def extract(payment):
+    metadata = payment.get("metadata")
+    if isinstance(metadata, str):
+        try:
+            metadata = json.loads(metadata)
+        except ValueError:
+            metadata = None
+    if not isinstance(metadata, dict) or not isinstance(metadata.get("nitecap_order"), dict):
+        raise Problem("Nitecap order not found.", 404)
+    record = metadata["nitecap_order"]
+    supplied = metadata.get("nitecap_signature", "")
+    if not isinstance(supplied, str) or not hmac.compare_digest(signature(record), supplied):
+        raise Problem("Order integrity check failed. Please contact Nitecap.", 409)
+    if (record.get("version") != 1 or record.get("reference") != payment.get("reference")
+            or record.get("amount") != payment.get("amount") or payment.get("currency") != "NGN"):
+        raise Problem("Payment details do not match this order. Please contact Nitecap.", 409)
+    return record
 
 
 def initialize(payload):
@@ -156,88 +164,68 @@ def initialize(payload):
     request_id = text_field(payload, "request_id", 80, 20)
     if not re.fullmatch(r"[a-zA-Z0-9-]{20,80}", request_id):
         raise Problem("Invalid checkout request.")
-    serialized = json.dumps(clean, sort_keys=True)
-    with db() as connection:
-        connection.execute("INSERT OR IGNORE INTO orders(reference, request_id, payload, amount, created_at) VALUES(?,?,?,?,?)",
-                           ("NC-" + secrets.token_hex(16), request_id, serialized, amount, int(time.time())))
-        row = connection.execute("SELECT * FROM orders WHERE request_id=?", (request_id,)).fetchone()
-        if row["payload"] != serialized or row["amount"] != amount:
-            raise Problem("Your basket changed. Please start a new checkout.", 409)
-        if row["status"] == "paid":
-            return {"reference": row["reference"], "status": "paid"}
-        if row["access_code"]:
-            return {"reference": row["reference"], "access_code": row["access_code"]}
-    data = paystack("/transaction/initialize", {
-        "reference": row["reference"], "email": clean["customer"]["email"],
-        "amount": amount, "currency": "NGN",
-        "callback_url": os.environ["SITE_URL"].rstrip("/") + "/order.html",
-        "metadata": {"order_reference": row["reference"]}})
-    if data.get("reference") != row["reference"] or not isinstance(data.get("access_code"), str):
-        raise Problem("Unable to start payment. Please contact Nitecap.", 502)
-    with db() as connection:
-        connection.execute("UPDATE orders SET access_code=? WHERE reference=?", (data["access_code"], row["reference"]))
-    return {"reference": row["reference"], "access_code": data["access_code"]}
-
-
-def apply_payment(reference, payment):
-    with db() as connection:
-        row = connection.execute("SELECT * FROM orders WHERE reference=?", (reference,)).fetchone()
-        if row is None:
-            raise Problem("Order not found.", 404)
-        if payment.get("reference") != reference or payment.get("amount") != row["amount"] or payment.get("currency") != "NGN":
-            raise Problem("Payment details do not match this order. Please contact Nitecap.", 409)
-        if payment.get("status") == "success":
-            connection.execute("UPDATE orders SET status='paid', paid_at=COALESCE(paid_at, ?) WHERE reference=?", (int(time.time()), reference))
-            connection.execute("INSERT OR IGNORE INTO alerts(reference) VALUES(?)", (reference,))
-            return "paid"
-        return row["status"] if row["status"] == "paid" else "pending"
+    reference = "NC-" + hmac.new(os.environ["ORDER_SIGNING_KEY"].encode(), request_id.encode(), hashlib.sha256).hexdigest()[:32]
+    try:
+        existing = paystack("/transaction/verify/" + reference, missing_ok=True)
+        if existing:
+            data = existing["data"]
+            saved = extract(data)
+            if saved["order"] != clean or saved["amount"] != amount:
+                raise Problem("Your basket changed. Please start a new checkout.", 409)
+            if data.get("status") == "success":
+                return {"reference": reference, "status": "paid"}
+            raise Problem("This payment was already started. Check payment status or contact Nitecap before paying again.", 409)
+        record = {"version": 1, "reference": reference, "order": clean,
+                  "amount": amount, "created_at": int(time.time())}
+        fields = [("Order", "order_reference", reference),
+                  ("Cans", "cart_items", "; ".join(i["name"] + " x " + str(i["quantity"]) for i in clean["items"])),
+                  ("Customer", "customer_name", clean["customer"]["name"]),
+                  ("Phone", "customer_phone", clean["customer"]["phone"]),
+                  ("Delivery", "delivery_address", clean["address"]),
+                  ("Notes", "order_notes", clean["notes"])]
+        result = paystack("/transaction/initialize", {
+            "reference": reference, "email": clean["customer"]["email"],
+            "amount": amount, "currency": "NGN",
+            "callback_url": os.environ["SITE_URL"].rstrip("/") + "/order.html",
+            "metadata": {"nitecap_order": record, "nitecap_signature": signature(record),
+                         "custom_fields": [{"display_name": name, "variable_name": key, "value": value} for name, key, value in fields]}})
+        data = result["data"]
+        if data.get("reference") != reference or not isinstance(data.get("access_code"), str):
+            raise Problem("Unable to start payment. Please contact Nitecap.", 502)
+        return {"reference": reference, "access_code": data["access_code"]}
+    except Problem as error:
+        error.reference = reference
+        raise
 
 
 def verify(reference):
     if not re.fullmatch(r"NC-[a-f0-9]{32}", reference):
         raise Problem("Invalid order reference.")
-    with db() as connection:
-        row = connection.execute("SELECT * FROM orders WHERE reference=?", (reference,)).fetchone()
-    if not row:
-        raise Problem("Order not found.", 404)
-    status = row["status"]
-    if status != "paid":
-        status = apply_payment(reference, paystack("/transaction/verify/" + quote(reference)))
-    # Reference is a random capability: public responses contain no customer PII.
-    return {"reference": reference, "status": status, "amount": row["amount"], "currency": "NGN"}
+    result = paystack("/transaction/verify/" + quote(reference), missing_ok=True)
+    if result is None:
+        raise Problem("Payment has not been started. Please retry checkout.", 404)
+    payment = result["data"]
+    record = extract(payment)
+    return {"reference": reference, "status": "paid" if payment.get("status") == "success" else "pending",
+            "amount": record["amount"], "currency": "NGN"}
 
 
-def deliver_alerts():
-    """Retryable outbox. Run via Render cron; occasional duplicate email is possible."""
-    required = ("SMTP_HOST", "SMTP_FROM", "ORDER_NOTIFY_EMAIL")
-    if not all(os.environ.get(k) for k in required):
-        return 0
-    now, sent = int(time.time()), 0
-    with db() as connection:
-        rows = connection.execute("SELECT a.reference, o.payload, o.amount FROM alerts a JOIN orders o USING(reference) WHERE a.sent_at IS NULL AND a.lease_until < ? LIMIT 20", (now,)).fetchall()
-    for row in rows:
-        with db() as connection:
-            claimed = connection.execute("UPDATE alerts SET lease_until=?, attempts=attempts+1 WHERE reference=? AND sent_at IS NULL AND lease_until<?", (now + 120, row["reference"], now)).rowcount
-        if not claimed:
+def list_orders(page):
+    result = paystack("/transaction?perPage=100&page=" + str(page))
+    orders = []
+    for payment in result["data"]:
+        if not str(payment.get("reference", "")).startswith("NC-"):
             continue
-        order = json.loads(row["payload"])
-        msg = EmailMessage()
-        msg["From"], msg["To"] = os.environ["SMTP_FROM"], os.environ["ORDER_NOTIFY_EMAIL"]
-        msg["Subject"] = "Paid Nitecap order " + row["reference"]
-        msg.set_content("Payment verified. Total: NGN {:.2f}\nReference: {}\n\n{}".format(row["amount"] / 100, row["reference"], json.dumps(order, indent=2, ensure_ascii=False)))
         try:
-            with smtplib.SMTP(os.environ["SMTP_HOST"], int(os.environ.get("SMTP_PORT", "587")), timeout=15) as smtp:
-                smtp.starttls(context=ssl.create_default_context())
-                if os.environ.get("SMTP_USER"):
-                    smtp.login(os.environ["SMTP_USER"], os.environ.get("SMTP_PASSWORD", ""))
-                smtp.send_message(msg)
-            with db() as connection:
-                connection.execute("UPDATE alerts SET sent_at=?, lease_until=0 WHERE reference=?", (int(time.time()), row["reference"]))
-            sent += 1
-        except (OSError, smtplib.SMTPException):
-            # No customer details, SMTP password or provider response in logs.
-            print("Order alert delivery failed; retained for retry.", flush=True)
-    return sent
+            record = extract(payment)
+        except Problem:
+            continue
+        orders.append({"reference": record["reference"], "payload": record["order"],
+                       "amount": record["amount"], "created_at": record["created_at"],
+                       "paid_at": payment.get("paid_at") if payment.get("status") == "success" else None,
+                       "status": "paid" if payment.get("status") == "success" else payment.get("status", "pending")})
+    pagination = result.get("meta", {})
+    return {"orders": orders, "page": page, "has_more": page < pagination.get("pageCount", page)}
 
 
 def authorized(environ):
@@ -250,7 +238,7 @@ def app(environ, start_response):
     try:
         return dispatch(environ, start_response)
     except Problem as error:
-        return respond(start_response, error.status, {"error": error.message})
+        return respond(start_response, error.status, {"error": error.message, "reference": error.reference})
     except Exception:
         print("Checkout request failed; inspect server health.", flush=True)
         return respond(start_response, 500, {"error": "Something went wrong. Please retry or contact Nitecap."})
@@ -268,18 +256,21 @@ def respond(start, status, value, content_type="application/json; charset=utf-8"
 def dispatch(env, start):
     path, method = env.get("PATH_INFO", "/"), env["REQUEST_METHOD"]
     if method == "GET" and path == "/health":
-        with db() as connection:
-            connection.execute("SELECT 1")
         return respond(start, 200, {"ok": True})
     if method == "GET" and path == "/api/catalog":
         return respond(start, 200, {"products": [{"id": p[0], "name": p[1], "kind": p[2], "image": p[3], "price": PRICE} for p in PRODUCTS],
                                   "fulfilment": fulfilment(), "enabled": bool(ready())})
     if method == "GET" and path == "/api/admin/orders":
         authorized(env)
-        with db() as connection:
-            rows = connection.execute("SELECT o.reference, o.payload, o.amount, o.status, o.created_at, o.paid_at, a.sent_at AS alert_sent_at FROM orders o LEFT JOIN alerts a USING(reference) ORDER BY created_at DESC LIMIT 200").fetchall()
-        return respond(start, 200, {"orders": [{**dict(row), "payload": json.loads(row["payload"])} for row in rows]})
-    if method == "POST" and path in ("/api/orders", "/api/verify", "/api/paystack/webhook", "/api/admin/retry-alerts"):
+        from urllib.parse import parse_qs
+        try:
+            page = int(parse_qs(env.get("QUERY_STRING", "")).get("page", ["1"])[0])
+            if not 1 <= page <= 10000:
+                raise ValueError()
+        except ValueError:
+            raise Problem("Invalid page.")
+        return respond(start, 200, list_orders(page))
+    if method == "POST" and path in ("/api/orders", "/api/verify", "/api/paystack/webhook"):
         try:
             length = int(env.get("CONTENT_LENGTH") or "0")
         except ValueError:
@@ -306,19 +297,13 @@ def dispatch(env, start):
             return respond(start, 200, initialize(payload))
         if path == "/api/verify":
             return respond(start, 200, verify(text_field(payload, "reference", 40)))
-        if path == "/api/admin/retry-alerts":
-            authorized(env)
-            return respond(start, 200, {"sent": deliver_alerts()})
         if payload.get("event") == "charge.success":
             data = payload.get("data")
             if not isinstance(data, dict):
                 raise Problem("Invalid event.")
-            reference = data.get("reference", "")
-            # Ignore charges from other applications sharing this Paystack account.
-            with db() as connection:
-                known = connection.execute("SELECT 1 FROM orders WHERE reference=?", (reference,)).fetchone()
-            if known:
-                apply_payment(reference, data)
+            if str(data.get("reference", "")).startswith("NC-"):
+                extract(data)
+        # Paystack is the durable record: acknowledge without local side effects.
         return respond(start, 200, {"received": True})
     if path.startswith("/api/"):
         raise Problem("Endpoint not found.", 404)
@@ -331,10 +316,6 @@ def dispatch(env, start):
 
 
 if __name__ == "__main__":
-    import sys
-    if "--send-alerts" in sys.argv:
-        print("Sent {} order alert(s).".format(deliver_alerts()))
-    else:
-        from wsgiref.simple_server import make_server
-        with make_server("127.0.0.1", int(os.environ.get("PORT", "8000")), app) as server:
-            server.serve_forever()
+    from wsgiref.simple_server import make_server
+    with make_server("127.0.0.1", int(os.environ.get("PORT", "8000")), app) as server:
+        server.serve_forever()

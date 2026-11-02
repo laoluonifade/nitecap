@@ -14,7 +14,7 @@
     const response = await fetch(path, {method: payload ? 'POST' : 'GET', headers:payload ? {'Content-Type':'application/json'} : {}, body:payload ? JSON.stringify(payload) : undefined});
     let data;
     try { data = await response.json(); } catch { throw new Error('Checkout is unavailable. Please email hi@nitecapcocktail.com.'); }
-    if (!response.ok) throw new Error(data.error || 'Please try again.');
+    if (!response.ok) { const error = new Error(data.error || 'Please try again.'); error.reference = data.reference; throw error; }
     return data;
   }
   function status(message) { $('payment-status').textContent = message; }
@@ -92,7 +92,7 @@
   }
   $('checkout-form').addEventListener('input', () => { if (!pending) requestId = crypto.randomUUID(); });
   $('fulfilment').addEventListener('change', drawCart);
-  $('check-payment').addEventListener('click', check);
+  $('check-payment').onclick = check;
   $('new-order').addEventListener('click', () => { storage.clear(); location.href = 'order.html'; });
   $('checkout-form').addEventListener('submit', async event => {
     event.preventDefault(); if (busy || paid) return;
@@ -108,13 +108,22 @@
         pending = {...result, items, amount:items.reduce((sum,i) => sum+catalog.products.find(p => p.id===i.id).price*i.quantity,0)+(catalog.fulfilment.find(o => o.id===data.get('fulfilment_id'))?.fee_naira || 0)*100};
         storage.set(pending);
       }
-      $('check-payment').hidden = false;
+      $('check-payment').hidden = false; $('check-payment').onclick = check;
       if (pending.status === 'paid') { await check(); return; }
       const popup = new window.PaystackPop();
       popup.resumeTransaction(pending.access_code);
       status(`Complete your payment in Paystack. Your order reference is ${pending.reference}.`);
       polls = 0; poll();
-    } catch (error) { status(error.message); }
+    } catch (error) {
+      if (error.reference) {
+        status(`${error.message} Reference: ${error.reference}.`);
+        $('check-payment').hidden = false;
+        $('check-payment').onclick = async () => {
+          const old = pending; pending = {reference:error.reference}; await check();
+          if (!paid) pending = old; else storage.set(pending);
+        };
+      } else status(error.message);
+    }
     finally { busy = false; buttonState(); }
   });
   async function load() {
