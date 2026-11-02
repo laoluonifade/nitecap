@@ -110,7 +110,8 @@ def paystack(path, payload=None, missing_ok=False):
     req = Request("https://api.paystack.co" + path,
                   data=json.dumps(payload).encode() if payload is not None else None,
                   headers={"Authorization": "Bearer " + os.environ["PAYSTACK_SECRET_KEY"],
-                           "Content-Type": "application/json"})
+                           "Content-Type": "application/json",
+                           "User-Agent": "NitecapCheckout/1.0 (+https://nitecapcocktail.com)"})
     try:
         with urlopen(req, timeout=18) as response:
             result = json.load(response)
@@ -118,9 +119,18 @@ def paystack(path, payload=None, missing_ok=False):
             raise ValueError()
         return result
     except HTTPError as error:
+        body = error.read()
+        if error.code == 403:
+            try:
+                provider_message = json.loads(body).get("message", "")
+            except ValueError:
+                provider_message = "non-JSON gateway response"
+            # Diagnostic category only; never print API keys or request/customer data.
+            category = next((word for word in ("ip", "permission", "key", "disabled", "blocked") if word in str(provider_message).lower()), "gateway")
+            print("Paystack forbidden category: " + category, flush=True)
         if missing_ok and error.code in (400, 404):
             try:
-                message = json.loads(error.read()).get("message", "").lower()
+                message = json.loads(body).get("message", "").lower()
             except (ValueError, AttributeError):
                 message = ""
             if error.code == 404 or ("not found" in message or "invalid transaction reference" in message):
