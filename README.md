@@ -12,7 +12,7 @@ Only orders successfully initialized in Paystack are retained. A basket abandone
 
 ## Deploy for $0 hosting
 
-Deploy this repository's Dockerfile as a **Free** Render web service, with no disk and no paid database. `render.yaml` uses `plan: free`. Keep the existing static site until the checkout service is tested, then attach the custom domain to the web service. Do not create another account to bypass Render's workspace quotas; use the existing workspace.
+Deploy this repository's Dockerfile as a **Free** Render web service, with no disk and no paid database. `render.yaml` uses `plan: free`. Keep the existing site and custom domain on Render Static hosting. The checkout and order desk call the free backend at https://nitecap-checkout.onrender.com; CORS is restricted to the two Nitecap domains and that backend origin. No DNS move is needed. Do not create another account to bypass Render's workspace quotas; use the existing workspace.
 
 Set these environment variables in Render, never in Git or frontend code:
 
@@ -26,7 +26,7 @@ Delivery is the default fulfilment option, costs ₦0, and requires an address. 
 
 In the Paystack dashboard, set the corresponding test/live webhook URL to `<SITE_URL>/api/paystack/webhook`. Do not overwrite a webhook used by another application without checking first. The callback URL is supplied per transaction. Check merchant payment email notification preferences in Paystack if desired; this app does not send its own emails.
 
-Test a complete Paystack test-mode payment, cancellation, pending status, callback and webhook. Confirm that items/contact/address appear in the private order dashboard and in Paystack. Test recovery after a redeploy. Then configure the live key and webhook and move the domain. Automated tests do not make real payments.
+Test a complete Paystack test-mode payment, cancellation, pending status, callback and webhook. Confirm that items/contact/address appear in the private order dashboard and in Paystack. Test recovery after a redeploy. Then configure the live key and webhook and deploy the frontend to the existing static site. Automated tests do not make real payments.
 
 ## Free-plan tradeoffs
 

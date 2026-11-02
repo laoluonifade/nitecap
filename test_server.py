@@ -7,6 +7,8 @@ import os
 import unittest
 from unittest.mock import patch
 import server
+from urllib.error import HTTPError
+REAL_PAYSTACK = server.paystack
 
 
 class CheckoutTests(unittest.TestCase):
@@ -137,6 +139,27 @@ class CheckoutTests(unittest.TestCase):
         with patch.dict(os.environ, {'CHECKOUT_ENABLED': 'false'}):
             self.assertEqual(self.request('/api/orders', self.payload)[0], 503)
         self.assertEqual(self.request('/api/orders', self.payload, HTTP_ORIGIN='https://other.example')[0], 403)
+
+    def test_missing_provider_reference_with_punctuation_allows_initialization(self):
+        error = HTTPError('https://api.paystack.co/transaction/verify/test', 400, 'Bad Request', {},
+                          io.BytesIO(b'{"status":false,"message":"Transaction reference not found."}'))
+        with patch.object(server, 'urlopen', side_effect=error):
+            self.assertIsNone(REAL_PAYSTACK('/transaction/verify/test', missing_ok=True))
+
+    def test_provider_auth_failure_does_not_look_like_missing_order(self):
+        error = HTTPError('https://api.paystack.co/transaction/verify/test', 401, 'Unauthorized', {},
+                          io.BytesIO(b'{"status":false,"message":"Invalid key"}'))
+        with patch.object(server, 'urlopen', side_effect=error):
+            with self.assertRaises(server.Problem):
+                REAL_PAYSTACK('/transaction/verify/test', missing_ok=True)
+
+    def test_static_storefront_cors_preflight_is_restricted(self):
+        for origin, expected in [('https://nitecapcocktail.com', 200), ('https://attacker.example', 403)]:
+            result = []
+            env = {'PATH_INFO': '/api/orders', 'REQUEST_METHOD': 'OPTIONS', 'HTTP_ORIGIN': origin}
+            list(server.app(env, lambda status, headers: result.append((status, dict(headers)))))
+            self.assertEqual(int(result[0][0].split()[0]), expected)
+            self.assertEqual(result[0][1].get('Access-Control-Allow-Origin'), origin if expected == 200 else None)
 
     def test_server_does_not_expose_secrets_or_source(self):
         for path in ['/../server.py', '/.env', '/data/orders.sqlite3']:
