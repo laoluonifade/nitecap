@@ -30,7 +30,7 @@ Test a complete Paystack test-mode payment, cancellation, pending status, callba
 
 ## Free-plan tradeoffs
 
-Render's free service sleeps after 15 minutes idle and can take about a minute to wake. Its free hours, bandwidth and build limits still apply; creating a second service does not increase the workspace's quota. No paid instance or storage is configured by this repository. Review workspace usage/billing settings to avoid optional paid overages. Paystack's normal payment processing fees still apply to transactions.
+Render's free service sleeps after 15 minutes idle and can take about a minute to wake. Its free hours, bandwidth and build limits still apply; creating a second service does not increase the workspace's quota. No paid instance or storage is configured by this repository. Review workspace usage/billing settings to avoid optional paid overages. Customers pay Paystack's normal processing fee. Product prices remain ₦5,000 per can; the added fee is disclosed only at checkout, with the final charged amount shown before payment. The server checks Paystack's requested amount against the signed order total and records the separately charged amount.
 
 No free Render Postgres is used because it expires after 30 days. No local SQLite is used because Render's free filesystem is erased across restarts. The order dashboard remains dependent on Paystack API availability and rate limits; it shows up to 100 provider transactions per page, with next/previous navigation.
 

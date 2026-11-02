@@ -14,7 +14,7 @@
           `${p.customer.name}\n${p.customer.email}\n${p.customer.phone}`,
           p.items.map(i => `${i.name} × ${i.quantity}`).join('\n'),
           `${p.fulfilment.label}\n${p.address}\n${p.notes}`,
-          `${order.status.toUpperCase()}\nOrder ₦${(order.amount/100).toLocaleString()}\nCharged ₦${((order.charged_amount || order.amount)/100).toLocaleString()}\n${order.paid_at ? 'Paid '+new Date(order.paid_at).toLocaleString() : 'Do not fulfil until paid'}}`];
+          `${order.status.toUpperCase()}\nOrder ₦${(order.amount/100).toLocaleString()}\nCharged ₦${((order.charged_amount || order.amount)/100).toLocaleString()}\n${order.paid_at ? 'Paid '+new Date(order.paid_at).toLocaleString() : 'Do not fulfil until paid'}`];
         for (const value of cells) { const td = document.createElement('td'); td.textContent = value; tr.append(td); }
         $('order-rows').append(tr);
       }
