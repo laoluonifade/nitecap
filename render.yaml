@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: nitecap
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    disk:
+      name: nitecap-orders
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: SITE_URL
+        value: https://nitecapcocktail.com
+      - key: ORDER_DB
+        value: /data/orders.sqlite3
+      - key: CHECKOUT_ENABLED
+        value: "false"
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
+      - key: ADMIN_TOKEN
+        generateValue: true
+      - key: ORDER_NOTIFY_EMAIL
+        value: hi@nitecapcocktail.com
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
