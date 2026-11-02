@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: nitecap-checkout
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: SITE_URL
+        value: https://nitecapcocktail.com
+      - key: CHECKOUT_ENABLED
+        value: "false"
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
+      - key: ADMIN_TOKEN
+        generateValue: true
+      - key: ORDER_SIGNING_KEY
+        generateValue: true
