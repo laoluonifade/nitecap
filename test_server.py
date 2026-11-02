@@ -132,6 +132,16 @@ class CheckoutTests(unittest.TestCase):
         # No local database/cache is required to recover the order.
         self.assertEqual(server.extract(self.ledger[ref])['order']['items'][0]['quantity'], 2)
 
+    def test_fee_inclusive_webhook_can_be_acknowledged_without_requested_amount(self):
+        ref = self.initialize()
+        data = copy.deepcopy(self.ledger[ref])
+        data.update(status='success', amount=1035354)
+        payload = {'event': 'charge.success', 'data': data}
+        sig = hmac.new(b'sk_test_fixture', json.dumps(payload).encode(), hashlib.sha512).hexdigest()
+        self.assertEqual(self.request('/api/paystack/webhook', payload, HTTP_X_PAYSTACK_SIGNATURE=sig)[0], 200)
+        # A webhook alone never alters the provider's pending state.
+        self.assertEqual(self.request('/api/verify', {'reference': ref})[1]['status'], 'pending')
+
     def test_browser_cannot_override_pending_provider_status(self):
         ref = self.initialize()
         result = self.request('/api/verify', {'reference': ref, 'status': 'success'})[1]

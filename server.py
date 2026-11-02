@@ -331,9 +331,9 @@ def dispatch(env, start):
             data = payload.get("data")
             if not isinstance(data, dict):
                 raise Problem("Invalid event.")
-            if str(data.get("reference", "")).startswith("NC-"):
-                extract(data)
-        # Paystack is the durable record: acknowledge without local side effects.
+        # Paystack is the durable record: acknowledge authenticated events without
+        # local side effects. The verification/list APIs independently validate the
+        # signed order and provider-requested amount before displaying PAID.
         return respond(start, 200, {"received": True})
     if path.startswith("/api/"):
         raise Problem("Endpoint not found.", 404)
